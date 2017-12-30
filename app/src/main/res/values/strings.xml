@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Outbound Flight</string>
+    <string name="astronomy_picture_of_the_day">Astronomy Picture of the Day</string>
+    <string name="learn_more">LEARN MORE</string>
+    <string name="three_generations_of_rovers">Three Generations on Mars</string>
+    <string name="rovers">Rovers</string>
+    <string name="curiosity">Curiosity</string>
+    <string name="opportunity">Opportunity</string>
+    <string name="spirit">Spirit</string>
+    <string name="earth">Earth</string>
+    <string name="earth_day">Earth Day:</string>
+    <string name="martian_sol">Martian Sol:</string>
+    <string name="rover_id">Rover ID:</string>
+</resources>
