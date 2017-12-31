@@ -7,16 +7,20 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 import productions.darthplagueis.nasafeed.BuildConfig;
 import productions.darthplagueis.nasafeed.R;
 import productions.darthplagueis.nasafeed.api.MarsRoverGetter;
 import productions.darthplagueis.nasafeed.controller.MarsRoverAdapter;
 import productions.darthplagueis.nasafeed.model.MarsRover.Photos;
+import productions.darthplagueis.nasafeed.model.MarsRover.RoverManifest;
 import productions.darthplagueis.nasafeed.model.MarsRover.RoverPhotos;
 import productions.darthplagueis.nasafeed.util.DataProvider;
 import productions.darthplagueis.nasafeed.util.recyclerview.EndlessRecyclerViewScrollListener;
@@ -36,7 +40,13 @@ public class OpportunityFragment extends Fragment {
     private View rootView;
     private int pageNumber = 1;
     private int solNumber = 1;
+    private int maxSol;
+    private int maxResult = 25;
+    private boolean useMarsRoverDiff = false;
+    private boolean marsDiffRan = false;
+    private boolean subtractSol = false;
     private Retrofit retrofit;
+    private RecyclerView recyclerView;
     private MarsRoverAdapter marsRoverAdapter;
     private GridLayoutManager layoutManager;
     private MarsRoverGetter marsRoverGetter;
@@ -52,7 +62,7 @@ public class OpportunityFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_recycler, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.frag_activity_recycler);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.frag_activity_recycler);
         layoutManager = new GridLayoutManager(rootView.getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing);
@@ -70,6 +80,10 @@ public class OpportunityFragment extends Fragment {
 
         setScrolling(recyclerView);
 
+        getMaxSol();
+
+        setFab();
+
         return rootView;
     }
 
@@ -77,6 +91,11 @@ public class OpportunityFragment extends Fragment {
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                if (subtractSol) {
+                    solNumber--;
+                } else {
+                    solNumber++;
+                }
                 pageNumber++;
                 getMoreRoverPhotos(solNumber, pageNumber);
             }
@@ -92,13 +111,59 @@ public class OpportunityFragment extends Fragment {
                 if (response.isSuccessful()) {
                     RoverPhotos roverPhotos = response.body();
                     List<Photos> photosList = roverPhotos.getPhotos();
-                    if (photosList.size() > 0) {
-                        marsRoverAdapter.listUpdate(photosList);
+                    if (!useMarsRoverDiff) {
+                        if (photosList.size() > 0) {
+                            marsRoverAdapter.listUpdate(photosList);
+                        } else if (subtractSol) {
+                            solNumber--;
+                            pageNumber = 1;
+                            getMoreRoverPhotos(solNumber, pageNumber);
+                        } else {
+                            solNumber++;
+                            pageNumber = 1;
+                            getMoreRoverPhotos(solNumber, pageNumber);
+                        }
                     } else {
-                        solNumber++;
-                        pageNumber = 1;
-                        getMoreRoverPhotos(solNumber, pageNumber);
+                        Log.d(TAG, "onResponse: " + "Callback userMarsRoverDiff statement ran.");
+                        if (photosList.size() > 0 && !marsDiffRan) {
+                            marsDiffRan = true;
+                            marsRoverAdapter.updateWithDiff(photosList);
+                            if (photosList.size() < maxResult && subtractSol) {
+                                solNumber--;
+                                pageNumber = 1;
+                                getMoreRoverPhotos(solNumber, pageNumber);
+                            } else if (photosList.size() < maxResult) {
+                                solNumber++;
+                                pageNumber = 1;
+                                getMoreRoverPhotos(solNumber, pageNumber);
+                            }
+                        } else if (photosList.size() > 0) {
+                            if (photosList.size() == maxResult) {
+                                useMarsRoverDiff = false;
+                                marsRoverAdapter.listUpdate(photosList);
+                            } else if (photosList.size() < maxResult && subtractSol) {
+                                marsRoverAdapter.listUpdate(photosList);
+                                pageNumber++;
+                                getMoreRoverPhotos(solNumber, pageNumber);
+                            } else if (photosList.size() < maxResult) {
+                                marsRoverAdapter.listUpdate(photosList);
+                                pageNumber++;
+                                getMoreRoverPhotos(solNumber, pageNumber);
+                            }
+                        } else if (photosList.size() == 0) {
+                            if (subtractSol) {
+                                solNumber--;
+                                pageNumber = 1;
+                                getMoreRoverPhotos(solNumber, pageNumber);
+                            } else {
+                                solNumber++;
+                                pageNumber = 1;
+                                getMoreRoverPhotos(solNumber, pageNumber);
+                            }
+                        }
                     }
+                    Log.d(TAG, "onResponse: " + "useMarsRoverDiff: " + useMarsRoverDiff);
+                    Log.d(TAG, "onResponse: " + "marsDiffRan: " + marsDiffRan);
                     Log.d(TAG, "onResponse: " + "sol: " + solNumber);
                     Log.d(TAG, "onResponse: " + "page: " + pageNumber);
                     Log.d(TAG, "onResponse: Opportunity size: " + photosList.size());
@@ -109,6 +174,57 @@ public class OpportunityFragment extends Fragment {
             @Override
             public void onFailure(Call<RoverPhotos> call, Throwable t) {
                 t.printStackTrace();
+            }
+        });
+    }
+
+    private void getMaxSol() {
+        Call<RoverManifest> call = marsRoverGetter.getOpportunityManifest(API_KEY);
+        call.enqueue(new Callback<RoverManifest>() {
+            @Override
+            public void onResponse(Call<RoverManifest> call, Response<RoverManifest> response) {
+                if (response.isSuccessful()) {
+                    RoverManifest roverManifest = response.body();
+                    maxSol = roverManifest.getPhoto_manifest().getMax_sol();
+                    Log.d(TAG, "onResponse: " + "MAX sol: " + maxSol);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoverManifest> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void setFab() {
+        FabSpeedDial fabSpeedDial = (FabSpeedDial) rootView.findViewById(R.id.fab_speed);
+        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
+            @Override
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.action_most_recent:
+                        solNumber = maxSol;
+                        pageNumber = 1;
+                        useMarsRoverDiff = true;
+                        marsDiffRan = false;
+                        subtractSol = true;
+                        getMoreRoverPhotos(solNumber, pageNumber);
+                        setScrolling(recyclerView);
+                        break;
+                    case R.id.action_least_recent:
+                        solNumber = 1;
+                        pageNumber = 1;
+                        useMarsRoverDiff = true;
+                        marsDiffRan = false;
+                        subtractSol = false;
+                        getMoreRoverPhotos(solNumber, pageNumber);
+                        setScrolling(recyclerView);
+                        break;
+                    default:
+                        break;
+                }
+                return false;
             }
         });
     }

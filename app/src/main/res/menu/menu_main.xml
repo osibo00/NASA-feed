@@ -7,21 +7,21 @@
         android:id="@+id/action_most_recent"
         android:icon="@drawable/white_astronaut"
         android:orderInCategory="100"
-        android:title="something3"
+        android:title="@string/most_recent_photos"
         app:showAsAction="never" />
 
     <item
         android:id="@+id/action_least_recent"
         android:icon="@drawable/white_planet"
         android:orderInCategory="100"
-        android:title="something2"
+        android:title="@string/least_recent_photos"
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/action_email"
+        android:id="@+id/action_search"
         android:icon="@drawable/white_rocketship"
         android:orderInCategory="100"
-        android:title="something1"
+        android:title="@string/search_by_earth_day"
         app:showAsAction="never" />
 
 </menu>

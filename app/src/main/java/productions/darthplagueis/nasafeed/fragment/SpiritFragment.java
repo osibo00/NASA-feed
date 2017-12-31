@@ -84,41 +84,9 @@ public class SpiritFragment extends Fragment {
 
         getMaxSol();
 
-        clickMeh();
+        setFab();
 
         return rootView;
-    }
-
-    private void clickMeh() {
-        FabSpeedDial fabSpeedDial = (FabSpeedDial) rootView.findViewById(R.id.fab_speed);
-        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
-            @Override
-            public boolean onMenuItemSelected(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.action_most_recent:
-                        solNumber = maxSol;
-                        pageNumber = 1;
-                        useMarsRoverDiff = true;
-                        marsDiffRan = false;
-                        subtractSol = true;
-                        getMoreRoverPhotos(solNumber, pageNumber);
-                        setScrolling(recyclerView);
-                        break;
-                    case R.id.action_least_recent:
-                        solNumber = 1;
-                        pageNumber = 1;
-                        useMarsRoverDiff = true;
-                        marsDiffRan = false;
-                        subtractSol = false;
-                        getMoreRoverPhotos(solNumber, pageNumber);
-                        setScrolling(recyclerView);
-                        break;
-                    default:
-                        break;
-                }
-                return false;
-            }
-        });
     }
 
     private void setScrolling(RecyclerView recyclerView) {
@@ -227,6 +195,38 @@ public class SpiritFragment extends Fragment {
             @Override
             public void onFailure(Call<RoverManifest> call, Throwable t) {
                 t.printStackTrace();
+            }
+        });
+    }
+
+    private void setFab() {
+        FabSpeedDial fabSpeedDial = (FabSpeedDial) rootView.findViewById(R.id.fab_speed);
+        fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
+            @Override
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.action_most_recent:
+                        solNumber = maxSol;
+                        pageNumber = 1;
+                        useMarsRoverDiff = true;
+                        marsDiffRan = false;
+                        subtractSol = true;
+                        getMoreRoverPhotos(solNumber, pageNumber);
+                        setScrolling(recyclerView);
+                        break;
+                    case R.id.action_least_recent:
+                        solNumber = 1;
+                        pageNumber = 1;
+                        useMarsRoverDiff = true;
+                        marsDiffRan = false;
+                        subtractSol = false;
+                        getMoreRoverPhotos(solNumber, pageNumber);
+                        setScrolling(recyclerView);
+                        break;
+                    default:
+                        break;
+                }
+                return false;
             }
         });
     }

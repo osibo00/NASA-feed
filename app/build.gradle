@@ -37,4 +37,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
     implementation 'com.android.support:palette-v7:26.1.0'
     implementation 'io.github.yavski:fab-speed-dial:1.0.6'
+    implementation 'com.github.faruktoptas:FancyShowCaseView:1.0.0'
+    implementation 'com.github.drawers:SpinnerDatePicker:1.0.2'
 }

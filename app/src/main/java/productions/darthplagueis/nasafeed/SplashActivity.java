@@ -97,10 +97,16 @@ public class SplashActivity extends AppCompatActivity {
                     HashMap<String, String> astroStrings = new HashMap<>();
                     astroStrings.put("date", pictureOfTheDay.getDate());
                     astroStrings.put("explanation", pictureOfTheDay.getExplanation());
-                    astroStrings.put("imageUrl", pictureOfTheDay.getHdurl());
+                    astroStrings.put("imageUrl", pictureOfTheDay.getUrl());
+                    astroStrings.put("imageHdurl", pictureOfTheDay.getHdurl());
                     astroStrings.put("title", pictureOfTheDay.getTitle());
 
                     DataProvider.addAstronomyList(astroStrings);
+
+                    Glide.with(getApplicationContext())
+                            .setDefaultRequestOptions(CustomRequestOptions.getRequestOptions())
+                            .load(pictureOfTheDay.getUrl())
+                            .preload();
 
                     Glide.with(getApplicationContext())
                             .setDefaultRequestOptions(CustomRequestOptions.getRequestOptions())

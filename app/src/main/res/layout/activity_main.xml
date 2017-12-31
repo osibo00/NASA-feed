@@ -181,18 +181,25 @@
                             android:scaleType="center"
                             android:src="@drawable/white_astronaut" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:layout_below="@+id/img_martian"
                             android:background="@drawable/button_bg_stroke_secondary_dark"
-                            android:fontFamily="sans-serif"
-                            android:text="@string/curiosity"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/curiosity"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                     </RelativeLayout>
 
@@ -228,18 +235,25 @@
                             android:scaleType="center"
                             android:src="@drawable/white_rocketship" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:layout_below="@+id/img_saucer"
                             android:background="@drawable/button_bg_stroke_primary_dark"
-                            android:fontFamily="sans-serif"
-                            android:text="@string/opportunity"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/opportunity"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                     </RelativeLayout>
 
@@ -285,18 +299,25 @@
                             android:scaleType="center"
                             android:src="@drawable/white_telescope" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:layout_below="@+id/img_telescope"
                             android:background="@drawable/button_bg_stroke_accent"
-                            android:fontFamily="sans-serif"
-                            android:text="@string/spirit"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/spirit"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                     </RelativeLayout>
 
@@ -331,18 +352,25 @@
                             android:scaleType="center"
                             android:src="@drawable/white_planet" />
 
-                        <TextView
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_alignParentBottom="true"
                             android:layout_below="@+id/img_planet"
                             android:background="@drawable/button_bg_stroke_secondary_accent"
-                            android:fontFamily="sans-serif"
-                            android:text="@string/earth"
-                            android:textAlignment="center"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:textStyle="bold" />
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="sans-serif"
+                                android:text="@string/earth"
+                                android:textAlignment="center"
+                                android:textColor="@color/white"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
 
                     </RelativeLayout>
 
