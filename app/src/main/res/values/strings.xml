@@ -4,11 +4,14 @@
     <string name="learn_more">LEARN MORE</string>
     <string name="three_generations_of_rovers">Three Generations on Mars</string>
     <string name="rovers">Rovers</string>
-    <string name="curiosity">Curiosity</string>
-    <string name="opportunity">Opportunity</string>
-    <string name="spirit">Spirit</string>
-    <string name="earth">Earth</string>
+    <string name="curiosity">CURIOSITY</string>
+    <string name="opportunity">OPPORTUNITY</string>
+    <string name="spirit">SPIRIT</string>
+    <string name="earth">EARTH</string>
     <string name="earth_day">Earth Day:</string>
     <string name="martian_sol">Martian Sol:</string>
     <string name="rover_id">Rover ID:</string>
+    <string name="most_recent_photos">Most Recent Photos</string>
+    <string name="least_recent_photos">Least Recent Photos</string>
+    <string name="search_by_earth_day">Search By Earth Date</string>
 </resources>

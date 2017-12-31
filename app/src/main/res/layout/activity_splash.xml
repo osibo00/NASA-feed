@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
-        android:fontFamily="monospace"
+        android:fontFamily="sans-serif-smallcaps"
         android:gravity="end"
         android:paddingBottom="50dp"
         android:paddingEnd="16dp"

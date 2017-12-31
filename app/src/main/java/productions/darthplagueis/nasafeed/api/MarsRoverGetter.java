@@ -15,6 +15,9 @@ public interface MarsRoverGetter {
     @GET("rovers/curiosity/photos")
     Call<RoverPhotos> getCuriosityPhotos(@Query("sol") int sol, @Query("page") int page, @Query("api_key") String apiKey);
 
+    @GET("rovers/curiosity/photos")
+    Call<RoverPhotos> getCuriositySearch(@Query("earth_date") String earthDate, @Query("api_key") String apiKey);
+
     @GET("rovers/spirit/photos")
     Call<RoverPhotos> getSpiritPhotos(@Query("sol") int sol, @Query("page") int page, @Query("api_key") String apiKey);
 

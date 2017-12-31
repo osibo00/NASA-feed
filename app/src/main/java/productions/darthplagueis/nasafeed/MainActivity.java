@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
 
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setAstronomyPhoto() {
         Glide.with(getApplicationContext())
-                .setDefaultRequestOptions(CustomRequestOptions.getRequestOptions())
+                .setDefaultRequestOptions(CustomRequestOptions.getOtherOptions())
+                .applyDefaultRequestOptions(new RequestOptions().centerCrop())
                 .load(DataProvider.getAstronomyPhotos().get("imageUrl"))
                 .into(astronomyImageView);
     }

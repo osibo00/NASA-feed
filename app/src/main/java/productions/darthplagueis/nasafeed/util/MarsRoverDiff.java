@@ -39,6 +39,5 @@ public class MarsRoverDiff extends DiffUtil.Callback {
         Photos oldPhotos = oldPhotosList.get(oldItemPosition);
         Photos newPhotos = newPhotosList.get(newItemPosition);
         return oldPhotos.getSol() == newPhotos.getSol();
-        //return oldPhotos.getImg_src().equals(newPhotos.getImg_src());
     }
 }

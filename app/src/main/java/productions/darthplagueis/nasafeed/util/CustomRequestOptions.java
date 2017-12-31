@@ -17,7 +17,7 @@ public class CustomRequestOptions {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.diskCacheStrategy(DiskCacheStrategy.ALL);
         requestOptions.error(R.drawable.nasalogo);
-        requestOptions.centerCrop();
+        //requestOptions.centerCrop();
         return requestOptions;
     }
 

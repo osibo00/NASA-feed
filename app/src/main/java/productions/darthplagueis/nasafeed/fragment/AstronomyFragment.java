@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -58,9 +59,9 @@ public class AstronomyFragment extends Fragment implements MainActivity.OnBackPr
 
     private void setImageLayout(final View rootView, final ImageView astronomyImageView) {
         Glide.with(rootView)
-                .setDefaultRequestOptions(CustomRequestOptions.getNoCropOptions())
+                .setDefaultRequestOptions(CustomRequestOptions.getOtherOptions())
                 .asBitmap()
-                .load(DataProvider.getAstronomyPhotos().get("imageUrl"))
+                .load(DataProvider.getAstronomyPhotos().get("imageHdurl"))
                 .listener(new RequestListener<Bitmap>() {
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Bitmap> target, boolean isFirstResource) {
@@ -83,6 +84,8 @@ public class AstronomyFragment extends Fragment implements MainActivity.OnBackPr
                             linearLayout.setBackgroundColor(palette.getMutedColor(getResources().getColor(R.color.colorPrimary)));
                             LinearLayout linearLayout01 = (LinearLayout) rootView.findViewById(R.id.photo_layout_explanation);
                             linearLayout01.setBackgroundColor(palette.getLightMutedColor(getResources().getColor(R.color.colorAccent)));
+                            RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.photo_detail_layout);
+                            layout.setBackgroundColor(palette.getLightMutedColor(getResources().getColor(R.color.colorAccent)));
                         }
                     }
 

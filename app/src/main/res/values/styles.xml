@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -14,6 +14,12 @@
 
     <style name="MyButton" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">@color/colorSecondaryDark</item>
+    </style>
+
+    <style name="DatePickerSpinner">
+        <item name="android:textSize">22dp</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryDark</item>
+        <item name="android:colorControlNormal" tools:targetApi="lollipop">@color/colorAccent</item>
     </style>
 
 
