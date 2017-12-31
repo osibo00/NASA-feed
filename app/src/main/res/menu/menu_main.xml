@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".FragmentsActivity">
+    <item
+        android:id="@+id/action_most_recent"
+        android:icon="@drawable/white_astronaut"
+        android:orderInCategory="100"
+        android:title="something3"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_least_recent"
+        android:icon="@drawable/white_planet"
+        android:orderInCategory="100"
+        android:title="something2"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_email"
+        android:icon="@drawable/white_rocketship"
+        android:orderInCategory="100"
+        android:title="something1"
+        app:showAsAction="never" />
+
+</menu>

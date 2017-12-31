@@ -68,11 +68,11 @@ public class MarsRoverAdapter extends RecyclerView.Adapter<MarsRoverViewHolder> 
         notifyItemRangeInserted(getItemCount(), photosList.size() - 1);
     }
 
-    public void updateList(List<Photos> newList) {
-        MarsRoverDiff marsRoverDiff = new MarsRoverDiff(this.photosList, newList);
+    public void updateWithDiff(List<Photos> newList) {
+        MarsRoverDiff marsRoverDiff = new MarsRoverDiff(photosList, newList);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(marsRoverDiff);
+        photosList.clear();
+        photosList.addAll(newList);
         diffResult.dispatchUpdatesTo(this);
-        this.photosList.clear();
-        this.photosList.addAll(newList);
     }
 }
