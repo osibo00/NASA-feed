@@ -1,5 +1,6 @@
 package productions.darthplagueis.nasafeed.api;
 
+import productions.darthplagueis.nasafeed.model.MarsRover.RoverManifest;
 import productions.darthplagueis.nasafeed.model.MarsRover.RoverPhotos;
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -19,4 +20,13 @@ public interface MarsRoverGetter {
 
     @GET("rovers/opportunity/photos")
     Call<RoverPhotos> getOpportunityPhotos(@Query("sol") int sol, @Query("page") int page, @Query("api_key") String apiKey);
+
+    @GET("manifests/spirit")
+    Call<RoverManifest> getSpiritManifest(@Query("api_key") String apiKey);
+
+    @GET("manifests/curiosity")
+    Call<RoverManifest> getCuriositytManifest(@Query("api_key") String apiKey);
+
+    @GET("manifests/opportunity")
+    Call<RoverManifest> getOpportunityManifest(@Query("api_key") String apiKey);
 }

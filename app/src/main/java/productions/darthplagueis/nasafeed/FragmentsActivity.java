@@ -10,7 +10,7 @@ import android.view.WindowManager;
 import productions.darthplagueis.nasafeed.fragment.AstronomyFragment;
 import productions.darthplagueis.nasafeed.fragment.CuriosityFragment;
 import productions.darthplagueis.nasafeed.fragment.OpportunityFragment;
-import productions.darthplagueis.nasafeed.fragment.SpirtFragment;
+import productions.darthplagueis.nasafeed.fragment.SpiritFragment;
 
 public class FragmentsActivity extends AppCompatActivity {
     private final static String TAG = "FRAGMENTS ACTIVITY";
@@ -46,10 +46,10 @@ public class FragmentsActivity extends AppCompatActivity {
                 break;
             case "spirit":
                 showTextView = false;
-                SpirtFragment spirtFragment = new SpirtFragment();
+                SpiritFragment spiritFragment = new SpiritFragment();
                 FragmentManager fragmentManager02 = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction02 = fragmentManager02.beginTransaction();
-                fragmentTransaction02.add(R.id.fragment_container, spirtFragment);
+                fragmentTransaction02.add(R.id.fragment_container, spiritFragment);
                 fragmentTransaction02.commit();
                 break;
             case "astronomy":
