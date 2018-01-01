@@ -21,8 +21,14 @@ public interface MarsRoverGetter {
     @GET("rovers/spirit/photos")
     Call<RoverPhotos> getSpiritPhotos(@Query("sol") int sol, @Query("page") int page, @Query("api_key") String apiKey);
 
+    @GET("rovers/spirit/photos")
+    Call<RoverPhotos> getSpiritSearch(@Query("earth_date") String earthDate, @Query("api_key") String apiKey);
+
     @GET("rovers/opportunity/photos")
     Call<RoverPhotos> getOpportunityPhotos(@Query("sol") int sol, @Query("page") int page, @Query("api_key") String apiKey);
+
+    @GET("rovers/opportunity/photos")
+    Call<RoverPhotos> getOpportunitySearch(@Query("earth_date") String earthDate, @Query("api_key") String apiKey);
 
     @GET("manifests/spirit")
     Call<RoverManifest> getSpiritManifest(@Query("api_key") String apiKey);
