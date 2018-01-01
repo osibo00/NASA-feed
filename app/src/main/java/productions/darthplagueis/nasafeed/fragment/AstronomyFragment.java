@@ -30,7 +30,7 @@ import productions.darthplagueis.nasafeed.util.DataProvider;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AstronomyFragment extends Fragment implements MainActivity.OnBackPressedListener {
+public class AstronomyFragment extends Fragment {
 
     public AstronomyFragment() {
         // Required empty public constructor
@@ -41,7 +41,6 @@ public class AstronomyFragment extends Fragment implements MainActivity.OnBackPr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.photo_view, container, false);
-        //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER);
 
         final ImageView astronomyImageView = (ImageView) rootView.findViewById(R.id.photo_detail_image);
         TextView titleTextView = (TextView) rootView.findViewById(R.id.photo_detail_title);
@@ -100,16 +99,5 @@ public class AstronomyFragment extends Fragment implements MainActivity.OnBackPr
                     }
                 })
                 .into(astronomyImageView);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        //((MainActivity) getActivity()).setOnBackPressedListener(this);
-    }
-
-    @Override
-    public void doBack() {
-        // getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 }

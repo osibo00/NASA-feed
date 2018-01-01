@@ -22,7 +22,7 @@ import productions.darthplagueis.nasafeed.util.CustomRequestOptions;
 import productions.darthplagueis.nasafeed.util.DataProvider;
 
 public class PhotoActivity extends AppCompatActivity {
-    private String imageUrl, name, fullName, roverId, sol, earthDate;
+    private String imageUrl, name, fullName, roverId, sol, earthDate, landingDate, maxDate, maxSol, totalPhotos;
     private ImageView photoDetailImage;
 
     @Override
@@ -38,6 +38,10 @@ public class PhotoActivity extends AppCompatActivity {
             roverId = extras.getString("roverId");
             sol = extras.getString("sol");
             earthDate = extras.getString("earthDate");
+            landingDate = extras.getString("landingDate");
+            maxDate = extras.getString("maxDate");
+            maxSol = extras.getString("maxSol");
+            totalPhotos = extras.getString("totalPhotos");
         }
 
         photoDetailImage = (ImageView) findViewById(R.id.photo_act_image);
@@ -46,12 +50,20 @@ public class PhotoActivity extends AppCompatActivity {
         TextView earthDateText = (TextView) findViewById(R.id.photo_act_earthday);
         TextView solDateText = (TextView) findViewById(R.id.photo_act_sol);
         TextView roverIdText = (TextView) findViewById(R.id.photo_act_rover);
+        TextView landingDateText = (TextView) findViewById(R.id.photo_act_landing);
+        TextView maxDateText = (TextView) findViewById(R.id.photo_act_maxdate);
+        TextView maxSolText = (TextView) findViewById(R.id.photo_act_maxsol);
+        TextView totalPhotosText = (TextView) findViewById(R.id.photo_act_totalphotos);
 
         nameText.setText(name);
         fullNameText.setText(fullName);
         earthDateText.setText(earthDate);
         solDateText.setText(sol);
         roverIdText.setText(roverId);
+        landingDateText.setText(landingDate);
+        maxDateText.setText(maxDate);
+        maxSolText.setText(maxSol);
+        totalPhotosText.setText(totalPhotos);
         setImageLayout();
 
     }
@@ -97,9 +109,17 @@ public class PhotoActivity extends AppCompatActivity {
                         TextView textView = (TextView) findViewById(R.id.photo_act_colortext);
                         TextView textView01 = (TextView) findViewById(R.id.photo_act_colortext01);
                         TextView textView02 = (TextView) findViewById(R.id.photo_act_colortext02);
+                        TextView textView03 = (TextView) findViewById(R.id.photo_act_colortext03);
+                        TextView textView04 = (TextView) findViewById(R.id.photo_act_colortext04);
+                        TextView textView05 = (TextView) findViewById(R.id.photo_act_colortext05);
+                        TextView textView06 = (TextView) findViewById(R.id.photo_act_colortext06);
                         textView.setTextColor(textColor);
                         textView01.setTextColor(textColor);
                         textView02.setTextColor(textColor);
+                        textView03.setTextColor(textColor);
+                        textView04.setTextColor(textColor);
+                        textView05.setTextColor(textColor);
+                        textView06.setTextColor(textColor);
                     }
                 })
                 .into(photoDetailImage);

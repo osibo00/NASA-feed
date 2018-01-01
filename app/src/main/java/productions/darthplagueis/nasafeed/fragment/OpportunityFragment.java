@@ -5,8 +5,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -73,6 +75,8 @@ public class OpportunityFragment extends Fragment implements DatePickerDialog.On
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_recycler, container, false);
 
+        setToolbar();
+
         recyclerView = (RecyclerView) rootView.findViewById(R.id.frag_activity_recycler);
         layoutManager = new GridLayoutManager(rootView.getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
@@ -89,7 +93,7 @@ public class OpportunityFragment extends Fragment implements DatePickerDialog.On
 
         marsRoverGetter = retrofit.create(MarsRoverGetter.class);
 
-        setScrolling(recyclerView);
+        setScrolling();
 
         getManifest();
 
@@ -102,7 +106,16 @@ public class OpportunityFragment extends Fragment implements DatePickerDialog.On
         return rootView;
     }
 
-    private void setScrolling(RecyclerView recyclerView) {
+    private void setToolbar() {
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.frag_recycler_toolbar);
+        toolbar.setTitle("Opportunity Rover");
+        toolbar.setSubtitle("Scroll your way through Mars!");
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    private void setScrolling() {
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -113,6 +126,7 @@ public class OpportunityFragment extends Fragment implements DatePickerDialog.On
                 }
                 pageNumber++;
                 getMoreRoverPhotos(solNumber, pageNumber);
+                Log.d(TAG, "onLoadMore: Ran");
             }
         };
         recyclerView.addOnScrollListener(scrollListener);
@@ -229,7 +243,7 @@ public class OpportunityFragment extends Fragment implements DatePickerDialog.On
                         marsDiffRan = false;
                         subtractSol = true;
                         getMoreRoverPhotos(solNumber, pageNumber);
-                        setScrolling(recyclerView);
+                        setScrolling();
                         break;
                     case R.id.action_least_recent:
                         solNumber = 1;
@@ -238,7 +252,7 @@ public class OpportunityFragment extends Fragment implements DatePickerDialog.On
                         marsDiffRan = false;
                         subtractSol = false;
                         getMoreRoverPhotos(solNumber, pageNumber);
-                        setScrolling(recyclerView);
+                        setScrolling();
                         break;
                     case R.id.action_search:
                         setCalender();

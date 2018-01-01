@@ -1,9 +1,7 @@
 package productions.darthplagueis.nasafeed;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 
-import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import io.github.yavski.fabspeeddial.FabSpeedDial;
 import me.toptas.fancyshowcase.FancyShowCaseView;
@@ -68,6 +65,7 @@ public class FragmentsActivity extends AppCompatActivity {
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.add(R.id.fragment_container, astronomyFragment);
                 fragmentTransaction.commit();
+                break;
             default:
                 break;
         }
@@ -77,15 +75,21 @@ public class FragmentsActivity extends AppCompatActivity {
     public static void setShowCaseView(Activity activity, FabSpeedDial fabSpeedDial) {
         new FancyShowCaseView.Builder(activity)
                 .focusOn(fabSpeedDial)
-                .title("Try me out!")
-                .focusRectAtPosition(fabSpeedDial.getScrollX(), fabSpeedDial.getScrollY(), fabSpeedDial.getWidth(), fabSpeedDial.getHeight())
-                .focusBorderColor(Color.parseColor("#ec407a"))
+                .title("See most recent, least recent or search images by day")
+                .focusCircleAtPosition(fabSpeedDial.getScrollX(), fabSpeedDial.getScrollY(), fabSpeedDial.getWidth())
+                .backgroundColor(Color.parseColor("#80a7001b"))
+                .focusBorderColor(Color.parseColor("#5b8bde"))
                 .focusBorderSize(10)
                 .delay(1500)
-                .backgroundColor(Color.parseColor("#80738ffe"))
-                //.showOnce("fancy1")
+                .showOnce("fancy1")
                 .build()
                 .show();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override

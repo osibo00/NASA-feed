@@ -5,9 +5,12 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -74,6 +77,8 @@ public class CuriosityFragment extends Fragment implements DatePickerDialog.OnDa
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_recycler, container, false);
 
+        setToolbar();
+
         recyclerView = (RecyclerView) rootView.findViewById(R.id.frag_activity_recycler);
         layoutManager = new GridLayoutManager(rootView.getContext(), 2);
         layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -102,7 +107,7 @@ public class CuriosityFragment extends Fragment implements DatePickerDialog.OnDa
 
         marsRoverGetter = retrofit.create(MarsRoverGetter.class);
 
-        setScrolling(recyclerView);
+        setScrolling();
 
         getManifest();
 
@@ -115,8 +120,17 @@ public class CuriosityFragment extends Fragment implements DatePickerDialog.OnDa
         return rootView;
     }
 
+    private void setToolbar() {
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.frag_recycler_toolbar);
+        toolbar.setTitle("Curiosity Rover");
+        toolbar.setSubtitle("Scroll your way through Mars!");
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
 
-    private void setScrolling(RecyclerView recyclerView) {
+
+    private void setScrolling() {
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -127,6 +141,7 @@ public class CuriosityFragment extends Fragment implements DatePickerDialog.OnDa
                 }
                 pageNumber++;
                 getMoreRoverPhotos(solNumber, pageNumber);
+                Log.d(TAG, "onLoadMore: Ran");
             }
         };
         recyclerView.addOnScrollListener(scrollListener);
@@ -243,7 +258,7 @@ public class CuriosityFragment extends Fragment implements DatePickerDialog.OnDa
                         marsDiffRan = false;
                         subtractSol = true;
                         getMoreRoverPhotos(solNumber, pageNumber);
-                        setScrolling(recyclerView);
+                        setScrolling();
                         break;
                     case R.id.action_least_recent:
                         solNumber = 1;
@@ -252,7 +267,7 @@ public class CuriosityFragment extends Fragment implements DatePickerDialog.OnDa
                         marsDiffRan = false;
                         subtractSol = false;
                         getMoreRoverPhotos(solNumber, pageNumber);
-                        setScrolling(recyclerView);
+                        setScrolling();
                         break;
                     case R.id.action_search:
                         setCalender();
@@ -268,12 +283,12 @@ public class CuriosityFragment extends Fragment implements DatePickerDialog.OnDa
     private void setShowCaseView() {
         new FancyShowCaseView.Builder(getActivity())
                 .focusOn(fabSpeedDial)
-                .title("Try me out!")
-                .focusRectAtPosition(fabSpeedDial.getScrollX(), fabSpeedDial.getScrollY(), fabSpeedDial.getWidth(), fabSpeedDial.getHeight())
-                .focusBorderColor(Color.parseColor("#ec407a"))
+                .title("See most recent, least recent or search images by day")
+                .focusCircleAtPosition(fabSpeedDial.getScrollX(), fabSpeedDial.getScrollY(), fabSpeedDial.getWidth())
+                .backgroundColor(Color.parseColor("#80a7001b"))
+                .focusBorderColor(Color.parseColor("#5b8bde"))
                 .focusBorderSize(10)
                 .delay(1500)
-                .backgroundColor(Color.parseColor("#80738ffe"))
                 //.showOnce("fancy1")
                 .build()
                 .show();

@@ -53,6 +53,11 @@ public class MarsRoverViewHolder extends RecyclerView.ViewHolder {
                 String sol = String.valueOf(photos.getSol());
                 String earthDate = photos.getEarth_date();
                 String imageUrl = photos.getImg_src();
+                String landingDate = photos.getRover().getLanding_date();
+                String maxDate = photos.getRover().getMax_date();
+                String maxSol = String.valueOf(photos.getRover().getMax_sol());
+                String totalPhotos = String.valueOf(photos.getRover().getTotal_photos());
+
 
                 Bundle bundle = new Bundle();
                 bundle.putString("imageUrl", imageUrl);
@@ -61,6 +66,10 @@ public class MarsRoverViewHolder extends RecyclerView.ViewHolder {
                 bundle.putString("roverId", roverId);
                 bundle.putString("sol", sol);
                 bundle.putString("earthDate", earthDate);
+                bundle.putString("landingDate", landingDate);
+                bundle.putString("maxDate", maxDate);
+                bundle.putString("maxSol", maxSol);
+                bundle.putString("totalPhotos", totalPhotos);
                 Intent intent = new Intent(context, PhotoActivity.class);
                 intent.putExtras(bundle);
                 context.startActivity(intent);

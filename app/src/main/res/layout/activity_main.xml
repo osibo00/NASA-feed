@@ -16,11 +16,12 @@
         android:elevation="20dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="@string/app_name">
 
     </android.support.v7.widget.Toolbar>
 
-    <ScrollView
+    <com.github.florent37.parallax.ScrollView
         android:id="@+id/main_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,10 +32,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/shuttle00"
+                android:tag="parallax=0.5" />
+
             <android.support.v7.widget.CardView
                 android:id="@+id/main_astro_cardview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="350dp"
                 app:cardCornerRadius="5dp"
                 app:cardElevation="6dp"
                 app:cardMaxElevation="10dp"
@@ -106,7 +115,7 @@
                         android:layout_height="250dp"
                         android:layout_alignParentTop="true"
                         android:scaleType="fitXY"
-                        android:src="@drawable/rovers" />
+                        android:src="@drawable/marsrovers00" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -145,10 +154,33 @@
             </android.support.v7.widget.CardView>
 
             <LinearLayout
-                android:id="@+id/curiosity_opp_layout"
+                android:id="@+id/photo_fun"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/main_rover_cardview"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/from_mars_to_your" />
+
+                <TextView
+                    style="@style/MyTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/from_mars_phone" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/curiosity_opp_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/photo_fun"
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.CardView
@@ -380,7 +412,7 @@
 
         </RelativeLayout>
 
-    </ScrollView>
+    </com.github.florent37.parallax.ScrollView>
 
 </RelativeLayout>
 
