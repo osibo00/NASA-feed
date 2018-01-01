@@ -1,8 +1,10 @@
 package productions.darthplagueis.nasafeed.fragment;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,11 +13,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tsongkha.spinnerdatepicker.DatePicker;
+import com.tsongkha.spinnerdatepicker.DatePickerDialog;
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
+
 import java.util.List;
 
 import io.github.yavski.fabspeeddial.FabSpeedDial;
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 import productions.darthplagueis.nasafeed.BuildConfig;
+import productions.darthplagueis.nasafeed.FragmentsActivity;
 import productions.darthplagueis.nasafeed.R;
 import productions.darthplagueis.nasafeed.api.MarsRoverGetter;
 import productions.darthplagueis.nasafeed.controller.MarsRoverAdapter;
@@ -34,7 +41,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class OpportunityFragment extends Fragment {
+public class OpportunityFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
     private final String TAG = "OPPORTUNITY FRAGMENT";
     private static final String API_KEY = BuildConfig.API_KEY;
     private View rootView;
@@ -45,11 +52,15 @@ public class OpportunityFragment extends Fragment {
     private boolean useMarsRoverDiff = false;
     private boolean marsDiffRan = false;
     private boolean subtractSol = false;
+    private String landingDate;
+    private String maxDate;
     private Retrofit retrofit;
     private RecyclerView recyclerView;
     private MarsRoverAdapter marsRoverAdapter;
     private GridLayoutManager layoutManager;
     private MarsRoverGetter marsRoverGetter;
+    private FabSpeedDial fabSpeedDial;
+    private AlertDialog.Builder builder;
 
 
     public OpportunityFragment() {
@@ -80,9 +91,13 @@ public class OpportunityFragment extends Fragment {
 
         setScrolling(recyclerView);
 
-        getMaxSol();
+        getManifest();
 
         setFab();
+
+        FragmentsActivity.setShowCaseView(getActivity(), fabSpeedDial);
+
+        builder = new AlertDialog.Builder(rootView.getContext());
 
         return rootView;
     }
@@ -178,7 +193,7 @@ public class OpportunityFragment extends Fragment {
         });
     }
 
-    private void getMaxSol() {
+    private void getManifest() {
         Call<RoverManifest> call = marsRoverGetter.getOpportunityManifest(API_KEY);
         call.enqueue(new Callback<RoverManifest>() {
             @Override
@@ -186,8 +201,12 @@ public class OpportunityFragment extends Fragment {
                 if (response.isSuccessful()) {
                     RoverManifest roverManifest = response.body();
                     maxSol = roverManifest.getPhoto_manifest().getMax_sol();
-                    Log.d(TAG, "onResponse: " + "MAX sol: " + maxSol);
+                    landingDate = roverManifest.getPhoto_manifest().getLanding_date();
+                    maxDate = roverManifest.getPhoto_manifest().getMax_date();
                 }
+                Log.d(TAG, "onResponse: " + "MAX sol: " + maxSol);
+                Log.d(TAG, "onResponse: " + "Launch date: " + landingDate);
+                Log.d(TAG, "onResponse: " + "MAX date " + maxDate);
             }
 
             @Override
@@ -198,7 +217,7 @@ public class OpportunityFragment extends Fragment {
     }
 
     private void setFab() {
-        FabSpeedDial fabSpeedDial = (FabSpeedDial) rootView.findViewById(R.id.fab_speed);
+        fabSpeedDial = (FabSpeedDial) rootView.findViewById(R.id.fab_speed);
         fabSpeedDial.setMenuListener(new SimpleMenuListenerAdapter() {
             @Override
             public boolean onMenuItemSelected(MenuItem menuItem) {
@@ -221,11 +240,97 @@ public class OpportunityFragment extends Fragment {
                         getMoreRoverPhotos(solNumber, pageNumber);
                         setScrolling(recyclerView);
                         break;
+                    case R.id.action_search:
+                        setCalender();
+                        break;
                     default:
                         break;
                 }
                 return false;
             }
         });
+    }
+
+    private void setCalender() {
+        String[] launchDateStrings = landingDate.split("-");
+        String[] maxDateStrings = maxDate.split("-");
+        int launchYear = Integer.parseInt(launchDateStrings[0]);
+        int launchMonth = Integer.parseInt(launchDateStrings[1]);
+        int launchDay = Integer.parseInt(launchDateStrings[2]);
+        int maxYear = Integer.parseInt(maxDateStrings[0]);
+        int maxMonth = Integer.parseInt(maxDateStrings[1]);
+        int maxDay = Integer.parseInt(maxDateStrings[2]);
+
+        new SpinnerDatePickerDialogBuilder()
+                .context(rootView.getContext())
+                .callback(OpportunityFragment.this)
+                .spinnerTheme(R.style.DatePickerSpinner)
+                .defaultDate(launchYear, launchMonth - 1, launchDay)
+                .maxDate(maxYear, maxMonth - 1, maxDay)
+                .minDate(launchYear, launchMonth - 1, launchDay)
+                .build()
+                .show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        String searchQuery = String.valueOf(year) + "-" + String.valueOf(monthOfYear + 1) + "-" + String.valueOf(dayOfMonth);
+        getSearchQuery(searchQuery);
+    }
+
+    private void getSearchQuery(String earthDate) {
+        Call<RoverPhotos> call = marsRoverGetter.getOpportunitySearch(earthDate, API_KEY);
+        call.enqueue(new Callback<RoverPhotos>() {
+            @Override
+            public void onResponse(Call<RoverPhotos> call, Response<RoverPhotos> response) {
+                if (response.isSuccessful()) {
+                    RoverPhotos roverPhotos = response.body();
+                    List<Photos> photosList = roverPhotos.getPhotos();
+                    if (photosList.size() > 0) {
+                        setResultsDialog(photosList.size());
+                        marsRoverAdapter.updateWithDiff(photosList);
+                    } else if (photosList.size() == 0) {
+                        setSearchAgainDialog();
+                    }
+                    Log.d(TAG, "onResponse: " + "Search Query list: " + photosList.size());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoverPhotos> call, Throwable t) {
+                setSearchAgainDialog();
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void setSearchAgainDialog() {
+        builder.setMessage("No images found for this day. Search again?")
+                .setPositiveButton("SEARCH", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        setCalender();
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create()
+                .show();
+    }
+
+    private void setResultsDialog(int size) {
+        builder.setMessage(String.valueOf(size) + " images found")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create()
+                .show();
     }
 }

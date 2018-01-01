@@ -302,7 +302,7 @@ public class CuriosityFragment extends Fragment implements DatePickerDialog.OnDa
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        String searchQuery = String.valueOf(year) + "-" + String.valueOf(monthOfYear) + "-" + String.valueOf(dayOfMonth);
+        String searchQuery = String.valueOf(year) + "-" + String.valueOf(monthOfYear + 1) + "-" + String.valueOf(dayOfMonth);
         getSearchQuery(searchQuery);
     }
 
@@ -326,6 +326,7 @@ public class CuriosityFragment extends Fragment implements DatePickerDialog.OnDa
 
             @Override
             public void onFailure(Call<RoverPhotos> call, Throwable t) {
+                setSearchAgainDialog();
                 t.printStackTrace();
             }
         });
@@ -350,7 +351,7 @@ public class CuriosityFragment extends Fragment implements DatePickerDialog.OnDa
     }
 
     private void setResultsDialog(int size) {
-        builder.setMessage(String.valueOf(size) + " Images Found")
+        builder.setMessage(String.valueOf(size) + " images found")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

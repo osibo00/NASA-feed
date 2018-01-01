@@ -1,5 +1,9 @@
 package productions.darthplagueis.nasafeed;
 
+import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +11,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
+
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+import me.toptas.fancyshowcase.FancyShowCaseView;
 import productions.darthplagueis.nasafeed.fragment.AstronomyFragment;
 import productions.darthplagueis.nasafeed.fragment.CuriosityFragment;
 import productions.darthplagueis.nasafeed.fragment.OpportunityFragment;
@@ -64,6 +72,20 @@ public class FragmentsActivity extends AppCompatActivity {
                 break;
         }
 
+    }
+
+    public static void setShowCaseView(Activity activity, FabSpeedDial fabSpeedDial) {
+        new FancyShowCaseView.Builder(activity)
+                .focusOn(fabSpeedDial)
+                .title("Try me out!")
+                .focusRectAtPosition(fabSpeedDial.getScrollX(), fabSpeedDial.getScrollY(), fabSpeedDial.getWidth(), fabSpeedDial.getHeight())
+                .focusBorderColor(Color.parseColor("#ec407a"))
+                .focusBorderSize(10)
+                .delay(1500)
+                .backgroundColor(Color.parseColor("#80738ffe"))
+                //.showOnce("fancy1")
+                .build()
+                .show();
     }
 
     @Override
