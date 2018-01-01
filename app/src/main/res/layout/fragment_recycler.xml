@@ -7,11 +7,24 @@
     android:background="@color/light_grey"
     tools:context=".FragmentsActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/frag_recycler_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorSecondary"
+        android:elevation="20dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+    </android.support.v7.widget.Toolbar>
+
     <productions.darthplagueis.nasafeed.util.recyclerview.GridRecyclerView
         android:id="@+id/frag_activity_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/frag_recycler_toolbar"
         android:layoutAnimation="@anim/grid_layout_animation_from_bottom"
         android:paddingEnd="@dimen/spacing">
 
@@ -21,15 +34,16 @@
         android:id="@+id/fab_speed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:paddingEnd="16dp"
+        android:layout_alignParentEnd="true"
         android:paddingBottom="32dp"
+        android:paddingEnd="16dp"
         app:fabGravity="bottom_end"
         app:fabMenu="@menu/menu_main"
-        app:miniFabBackgroundTint="@android:color/white"
-        app:miniFabDrawableTint="?attr/colorPrimaryDark"
-        app:miniFabTitleTextColor="?attr/colorPrimaryDark"
+        app:miniFabBackgroundTint="@color/colorSecondaryDark"
+        app:miniFabDrawableTint="@color/white"
+        app:miniFabTitleBackgroundTint="@color/colorSecondaryDark"
+        app:miniFabTitleTextColor="@color/white"
         app:touchGuardDrawable="@drawable/background" />
 
 </RelativeLayout>

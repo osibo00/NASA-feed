@@ -14,4 +14,17 @@
     <string name="most_recent_photos">Most Recent Photos</string>
     <string name="least_recent_photos">Least Recent Photos</string>
     <string name="search_by_earth_day">Search By Earth Date</string>
+    <string name="from_mars_to_your_phone">from Mars to your Phone</string>
+    <string name="from_mars_to_your">from Mars to your</string>
+    <string name="from_mars_phone">Phone</string>
+    <string name="landing_date">Landing Date:</string>
+    <string name="max_date">Max Date:</string>
+    <string name="total_photos">Total Photos:</string>
+    <string name="max_sol">Max Sol:</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="name_rover">Name:</string>
+    <string name="status">Status:</string>
+    <string name="launch_date">Launch Date:</string>
 </resources>

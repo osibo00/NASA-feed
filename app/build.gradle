@@ -39,4 +39,7 @@ dependencies {
     implementation 'io.github.yavski:fab-speed-dial:1.0.6'
     implementation 'com.github.faruktoptas:FancyShowCaseView:1.0.0'
     implementation 'com.github.drawers:SpinnerDatePicker:1.0.2'
+    implementation('com.github.florent37:androidparallax:1.0.1@aar') {
+        transitive = true
+    }
 }
