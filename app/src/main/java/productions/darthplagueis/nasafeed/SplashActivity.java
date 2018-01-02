@@ -13,7 +13,9 @@ import com.bumptech.glide.Glide;
 import java.util.HashMap;
 
 import productions.darthplagueis.nasafeed.api.AstronomyPotdGetter;
+import productions.darthplagueis.nasafeed.api.MarsRoverGetter;
 import productions.darthplagueis.nasafeed.model.AstronomyPictureOfTheDay;
+import productions.darthplagueis.nasafeed.model.MarsRover.RoverManifest;
 import productions.darthplagueis.nasafeed.util.CustomRequestOptions;
 import productions.darthplagueis.nasafeed.util.DataProvider;
 import retrofit2.Call;
@@ -23,6 +25,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SplashActivity extends AppCompatActivity {
+    private final String TAG = "Splash Activity";
     private static final String API_KEY = BuildConfig.API_KEY;
     private Intent intent;
 
@@ -33,7 +36,13 @@ public class SplashActivity extends AppCompatActivity {
 
         startAnimation();
         intent = new Intent(getBaseContext(), MainActivity.class);
+
         getAstronomyPotdData();
+
+        MarsRoverGetter marsRoverGetter = getMarsRoverGetter();
+        getCuriosityManifest(marsRoverGetter);
+        getOpportunityManifest(marsRoverGetter);
+        getSpiritManifest(marsRoverGetter);
     }
 
     private void startAnimation() {
@@ -119,6 +128,102 @@ public class SplashActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<AstronomyPictureOfTheDay> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private MarsRoverGetter getMarsRoverGetter() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.nasa.gov/mars-photos/api/v1/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(MarsRoverGetter.class);
+    }
+
+    private void getOpportunityManifest(MarsRoverGetter marsRoverGetter) {
+        Call<RoverManifest> call = marsRoverGetter.getOpportunityManifest(API_KEY);
+        call.enqueue(new Callback<RoverManifest>() {
+            @Override
+            public void onResponse(Call<RoverManifest> call, Response<RoverManifest> response) {
+                if (response.isSuccessful()) {
+                    RoverManifest roverManifest = response.body();
+
+                    HashMap<String, String> manifestStrings = new HashMap<>();
+                    manifestStrings.put("name", roverManifest.getPhoto_manifest().getName());
+                    manifestStrings.put("launchDate", roverManifest.getPhoto_manifest().getLaunch_date());
+                    manifestStrings.put("maxSol", String.valueOf(roverManifest.getPhoto_manifest().getMax_sol()));
+                    manifestStrings.put("landingDate", roverManifest.getPhoto_manifest().getLanding_date());
+                    manifestStrings.put("maxDate", roverManifest.getPhoto_manifest().getMax_date());
+                    manifestStrings.put("status", roverManifest.getPhoto_manifest().getStatus());
+                    manifestStrings.put("totalPhotos", String.valueOf(roverManifest.getPhoto_manifest().getTotal_photos()));
+
+                    DataProvider.addOpportunityManifestList(manifestStrings);
+                    Log.d(TAG, "onResponse: " + "Opport manifest: " + manifestStrings.size());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoverManifest> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void getCuriosityManifest(MarsRoverGetter marsRoverGetter) {
+        Call<RoverManifest> call = marsRoverGetter.getCuriositytManifest(API_KEY);
+        call.enqueue(new Callback<RoverManifest>() {
+            @Override
+            public void onResponse(Call<RoverManifest> call, Response<RoverManifest> response) {
+                if (response.isSuccessful()) {
+                    RoverManifest roverManifest = response.body();
+
+                    HashMap<String, String> manifestStrings = new HashMap<>();
+                    manifestStrings.put("name", roverManifest.getPhoto_manifest().getName());
+                    manifestStrings.put("launchDate", roverManifest.getPhoto_manifest().getLaunch_date());
+                    manifestStrings.put("maxSol", String.valueOf(roverManifest.getPhoto_manifest().getMax_sol()));
+                    manifestStrings.put("landingDate", roverManifest.getPhoto_manifest().getLanding_date());
+                    manifestStrings.put("maxDate", roverManifest.getPhoto_manifest().getMax_date());
+                    manifestStrings.put("status", roverManifest.getPhoto_manifest().getStatus());
+                    manifestStrings.put("totalPhotos", String.valueOf(roverManifest.getPhoto_manifest().getTotal_photos()));
+
+                    DataProvider.addCuriosityManifestList(manifestStrings);
+                    Log.d(TAG, "onResponse: " + "Curiosity manifest: " + manifestStrings.size());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoverManifest> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    private void getSpiritManifest(MarsRoverGetter marsRoverGetter) {
+        Call<RoverManifest> call = marsRoverGetter.getSpiritManifest(API_KEY);
+        call.enqueue(new Callback<RoverManifest>() {
+            @Override
+            public void onResponse(Call<RoverManifest> call, Response<RoverManifest> response) {
+                if (response.isSuccessful()) {
+                    RoverManifest roverManifest = response.body();
+
+                    HashMap<String, String> manifestStrings = new HashMap<>();
+                    manifestStrings.put("name", roverManifest.getPhoto_manifest().getName());
+                    manifestStrings.put("launchDate", roverManifest.getPhoto_manifest().getLaunch_date());
+                    manifestStrings.put("maxSol", String.valueOf(roverManifest.getPhoto_manifest().getMax_sol()));
+                    manifestStrings.put("landingDate", roverManifest.getPhoto_manifest().getLanding_date());
+                    manifestStrings.put("maxDate", roverManifest.getPhoto_manifest().getMax_date());
+                    manifestStrings.put("status", roverManifest.getPhoto_manifest().getStatus());
+                    manifestStrings.put("totalPhotos", String.valueOf(roverManifest.getPhoto_manifest().getTotal_photos()));
+
+                    DataProvider.addSpiritManifestList(manifestStrings);
+                    Log.d(TAG, "onResponse: " + "Spirit manifest: " + manifestStrings.size());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoverManifest> call, Throwable t) {
                 t.printStackTrace();
             }
         });
