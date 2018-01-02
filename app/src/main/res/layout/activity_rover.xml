@@ -16,7 +16,8 @@
         android:elevation="20dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="@string/mars_rovers">
 
     </android.support.v7.widget.Toolbar>
 
@@ -47,15 +48,14 @@
                 android:layout_below="@id/rover_logo_image"
                 android:background="@color/colorAccent"
                 android:gravity="start|center_vertical"
-                android:orientation="vertical"
-                android:paddingTop="2dp">
+                android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/rover_cur_image"
+                    android:id="@+id/rover_curiosity_image"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/spirit_rover00" />
+                    android:src="@drawable/curiosity_rover00" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -68,7 +68,6 @@
                     android:paddingTop="15dp">
 
                     <TextView
-                        android:id="@+id/rover_act_colortext"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
@@ -80,7 +79,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/rover_act_rovername"
+                        android:id="@+id/rover_curiosity_rovername"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
@@ -114,7 +113,7 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/rover_act_status"
+                        android:id="@+id/rover_curiosity_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
@@ -145,7 +144,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/rover_act_maxdate"
+                        android:id="@+id/rover_curiosity_maxdate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
@@ -176,7 +175,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/rover_act_launchdate"
+                        android:id="@+id/rover_curiosity_launchdate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
@@ -207,7 +206,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/rover_act_landing"
+                        android:id="@+id/rover_curiosity_landing"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
@@ -238,7 +237,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/rover_act_maxsol"
+                        android:id="@+id/rover_curiosity_maxsol"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
@@ -270,7 +269,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/rover_act_totalphotos"
+                        android:id="@+id/rover_curiosity_totalphotos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
@@ -288,7 +287,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_below="@id/rover_act_layout_explanation"
-                android:paddingTop="2dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/opportunity_rover" />
 
@@ -525,9 +523,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:layout_below="@id/rover_act_layout_opportunity"
-                android:paddingTop="2dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/curiosity_rover00" />
+                android:src="@drawable/spirit_rover00" />
 
             <LinearLayout
                 android:id="@+id/rover_act_layout_spirit"

@@ -6,7 +6,6 @@
 
     <application
         android:allowBackup="true"
-        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -38,7 +37,9 @@
         <activity
             android:name=".PhotoActivity"
             android:theme="@style/TranslucentTheme" />
-        <activity android:name=".RoverActivity"></activity>
+        <activity
+            android:name=".RoverActivity"
+            android:theme="@style/SecondaryTheme" />
     </application>
 
 </manifest>
