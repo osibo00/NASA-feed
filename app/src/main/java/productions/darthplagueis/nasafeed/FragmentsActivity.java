@@ -7,19 +7,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.WindowManager;
 
 
 import io.github.yavski.fabspeeddial.FabSpeedDial;
 import me.toptas.fancyshowcase.FancyShowCaseView;
 import productions.darthplagueis.nasafeed.fragment.AstronomyFragment;
-import productions.darthplagueis.nasafeed.fragment.CuriosityFragment;
 import productions.darthplagueis.nasafeed.fragment.OpportunityFragment;
 import productions.darthplagueis.nasafeed.fragment.SpiritFragment;
+import productions.darthplagueis.nasafeed.fragment.CuriosityFragment;
 
 public class FragmentsActivity extends AppCompatActivity {
     private final static String TAG = "FRAGMENTS ACTIVITY";
-    private String roverChoice = "rover_choice";
+    private String roverChoice = "rover choice";
     public static boolean showTextView;
 
     @Override
@@ -29,40 +28,30 @@ public class FragmentsActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            roverChoice = extras.getString(MainActivity.ROVERCHOICE);
+            roverChoice = extras.getString(MainActivity.ROVER_CHOICE);
         }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         switch (roverChoice) {
             case "opportunity":
                 showTextView = true;
-                OpportunityFragment opportunityFragment = new OpportunityFragment();
-                FragmentManager fragmentManager00 = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction00 = fragmentManager00.beginTransaction();
-                fragmentTransaction00.add(R.id.fragment_container, opportunityFragment);
-                fragmentTransaction00.commit();
+                fragmentTransaction.add(R.id.fragment_container, OpportunityFragment.newInstance());
+                fragmentTransaction.commit();
                 break;
             case "curiosity":
                 showTextView = true;
-                CuriosityFragment curiosityFragment = new CuriosityFragment();
-                FragmentManager fragmentManager01 = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction01 = fragmentManager01.beginTransaction();
-                fragmentTransaction01.add(R.id.fragment_container, curiosityFragment);
-                fragmentTransaction01.commit();
+                fragmentTransaction.add(R.id.fragment_container, CuriosityFragment.newInstance());
+                fragmentTransaction.commit();
                 break;
             case "spirit":
                 showTextView = false;
-                SpiritFragment spiritFragment = new SpiritFragment();
-                FragmentManager fragmentManager02 = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction02 = fragmentManager02.beginTransaction();
-                fragmentTransaction02.add(R.id.fragment_container, spiritFragment);
-                fragmentTransaction02.commit();
+                fragmentTransaction.add(R.id.fragment_container, SpiritFragment.newInstance());
+                fragmentTransaction.commit();
                 break;
             case "astronomy":
-                getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                        WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
                 AstronomyFragment astronomyFragment = new AstronomyFragment();
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.add(R.id.fragment_container, astronomyFragment);
                 fragmentTransaction.commit();
                 break;
@@ -81,7 +70,7 @@ public class FragmentsActivity extends AppCompatActivity {
                 .focusBorderColor(Color.parseColor("#5b8bde"))
                 .focusBorderSize(10)
                 .delay(1500)
-                .showOnce("fancy1")
+                //.showOnce("fancy1")
                 .build()
                 .show();
     }

@@ -288,21 +288,21 @@
                 android:layout_height="250dp"
                 android:layout_below="@id/rover_act_layout_explanation"
                 android:scaleType="fitXY"
-                android:src="@drawable/opportunity_rover" />
+                android:src="@drawable/opportunity_rover500px" />
 
             <LinearLayout
                 android:id="@+id/rover_act_layout_opportunity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rover_opportunity_image"
-                android:background="@color/colorAccent"
+                android:background="@color/colorSecondaryAccent"
                 android:gravity="start|center_vertical"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPrimaryDark"
+                    android:background="@color/colorSecondaryDark"
                     android:orientation="horizontal"
                     android:paddingBottom="5dp"
                     android:paddingEnd="10dp"
@@ -335,7 +335,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPrimary"
+                    android:background="@color/colorSecondary"
                     android:orientation="horizontal"
                     android:paddingBottom="5dp"
                     android:paddingEnd="10dp"
@@ -524,7 +524,7 @@
                 android:layout_height="250dp"
                 android:layout_below="@id/rover_act_layout_opportunity"
                 android:scaleType="fitXY"
-                android:src="@drawable/spirit_rover00" />
+                android:src="@drawable/spirit_rover500px" />
 
             <LinearLayout
                 android:id="@+id/rover_act_layout_spirit"

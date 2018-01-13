@@ -12,8 +12,9 @@ import com.bumptech.glide.Glide;
 
 import java.util.HashMap;
 
-import productions.darthplagueis.nasafeed.api.AstronomyPotdGetter;
-import productions.darthplagueis.nasafeed.api.MarsRoverGetter;
+import productions.darthplagueis.nasafeed.retrofit.NasaRetrofit;
+import productions.darthplagueis.nasafeed.retrofit.api.AstronomyPotdGetter;
+import productions.darthplagueis.nasafeed.retrofit.api.MarsRoverGetter;
 import productions.darthplagueis.nasafeed.model.AstronomyPictureOfTheDay;
 import productions.darthplagueis.nasafeed.model.MarsRover.RoverManifest;
 import productions.darthplagueis.nasafeed.util.CustomRequestOptions;
@@ -21,28 +22,30 @@ import productions.darthplagueis.nasafeed.util.DataProvider;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SplashActivity extends AppCompatActivity {
     private final String TAG = "Splash Activity";
     private static final String API_KEY = BuildConfig.API_KEY;
     private Intent intent;
+    private AstronomyPotdGetter astronomyPotdGetter;
+    private MarsRoverGetter marsRoverGetter;
+    public static final String curiosity = "curiosity";
+    public static final String opportunity = "opportunity";
+    public static final String spirit = "spirit";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        startAnimation();
+        setRetrofit();
         intent = new Intent(getBaseContext(), MainActivity.class);
+        startAnimation();
 
         getAstronomyPotdData();
-
-        MarsRoverGetter marsRoverGetter = getMarsRoverGetter();
-        getCuriosityManifest(marsRoverGetter);
-        getOpportunityManifest(marsRoverGetter);
-        getSpiritManifest(marsRoverGetter);
+        getCuriosityManifest();
+        getOpportunityManifest();
+        getSpiritManifest();
     }
 
     private void startAnimation() {
@@ -89,14 +92,14 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
-    private void getAstronomyPotdData() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.nasa.gov/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+    private void setRetrofit() {
+        NasaRetrofit nasaRetrofit = NasaRetrofit.getInstance();
+        astronomyPotdGetter = nasaRetrofit.astronomyPotdGetter();
+        marsRoverGetter = nasaRetrofit.marsRoverGetter();
+    }
 
-        AstronomyPotdGetter potdGetter = retrofit.create(AstronomyPotdGetter.class);
-        Call<AstronomyPictureOfTheDay> call = potdGetter.getAstronomyPotd(API_KEY);
+    private void getAstronomyPotdData() {
+        Call<AstronomyPictureOfTheDay> call = astronomyPotdGetter.getAstronomyPotd(API_KEY);
         call.enqueue(new Callback<AstronomyPictureOfTheDay>() {
             @Override
             public void onResponse(Call<AstronomyPictureOfTheDay> call, Response<AstronomyPictureOfTheDay> response) {
@@ -133,17 +136,8 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
-    private MarsRoverGetter getMarsRoverGetter() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.nasa.gov/mars-photos/api/v1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        return retrofit.create(MarsRoverGetter.class);
-    }
-
-    private void getOpportunityManifest(MarsRoverGetter marsRoverGetter) {
-        Call<RoverManifest> call = marsRoverGetter.getOpportunityManifest(API_KEY);
+    private void getOpportunityManifest() {
+        Call<RoverManifest> call = marsRoverGetter.getManifest(opportunity, API_KEY);
         call.enqueue(new Callback<RoverManifest>() {
             @Override
             public void onResponse(Call<RoverManifest> call, Response<RoverManifest> response) {
@@ -171,8 +165,8 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
-    private void getCuriosityManifest(MarsRoverGetter marsRoverGetter) {
-        Call<RoverManifest> call = marsRoverGetter.getCuriositytManifest(API_KEY);
+    private void getCuriosityManifest() {
+        Call<RoverManifest> call = marsRoverGetter.getManifest(curiosity, API_KEY);
         call.enqueue(new Callback<RoverManifest>() {
             @Override
             public void onResponse(Call<RoverManifest> call, Response<RoverManifest> response) {
@@ -200,8 +194,8 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
-    private void getSpiritManifest(MarsRoverGetter marsRoverGetter) {
-        Call<RoverManifest> call = marsRoverGetter.getSpiritManifest(API_KEY);
+    private void getSpiritManifest() {
+        Call<RoverManifest> call = marsRoverGetter.getManifest(spirit, API_KEY);
         call.enqueue(new Callback<RoverManifest>() {
             @Override
             public void onResponse(Call<RoverManifest> call, Response<RoverManifest> response) {

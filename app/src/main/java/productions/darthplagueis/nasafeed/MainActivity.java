@@ -10,26 +10,27 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.util.HashMap;
 import java.util.List;
 
-import productions.darthplagueis.nasafeed.api.MarsRoverGetter;
-import productions.darthplagueis.nasafeed.controller.MarsRoverAdapter;
+import productions.darthplagueis.nasafeed.retrofit.NasaRetrofit;
+import productions.darthplagueis.nasafeed.retrofit.api.MarsRoverGetter;
 import productions.darthplagueis.nasafeed.model.MarsRover.Photos;
-import productions.darthplagueis.nasafeed.model.MarsRover.RoverManifest;
 import productions.darthplagueis.nasafeed.model.MarsRover.RoverPhotos;
 import productions.darthplagueis.nasafeed.util.DataProvider;
 import productions.darthplagueis.nasafeed.util.CustomRequestOptions;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+
+import static productions.darthplagueis.nasafeed.SplashActivity.curiosity;
+import static productions.darthplagueis.nasafeed.SplashActivity.opportunity;
+import static productions.darthplagueis.nasafeed.SplashActivity.spirit;
 
 public class MainActivity extends AppCompatActivity {
     private final String TAG = "MAIN RESULTS";
-    public static final String ROVERCHOICE = "ROVER_CHOICE";
+    public static final String ROVER_CHOICE = "ROVER CHOICE";
     private static final String API_KEY = BuildConfig.API_KEY;
+    private MarsRoverGetter marsRoverGetter;
     private ImageView astronomyImageView;
     private Intent intent;
 
@@ -38,18 +39,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setRetrofit();
         astronomyImageView = (ImageView) findViewById(R.id.main_imageview);
         setAstronomyPhoto();
 
-        MarsRoverGetter marsRoverGetter = getMarsRoverGetter();
-        getCuriosityData(marsRoverGetter);
-        getOpportunityData(marsRoverGetter);
-        getSpiritData(marsRoverGetter);
-//        getCuriosityManifest(marsRoverGetter);
-//        getOpportunityManifest(marsRoverGetter);
-//        getSpiritManifest(marsRoverGetter);
+        getCuriosityData();
+        getOpportunityData();
+        getSpiritData();
 
         unlimitedPower();
+    }
+
+    private void setRetrofit() {
+        NasaRetrofit nasaRetrofit = NasaRetrofit.getInstance();
+        marsRoverGetter = nasaRetrofit.marsRoverGetter();
     }
 
     private void setAstronomyPhoto() {
@@ -60,17 +63,8 @@ public class MainActivity extends AppCompatActivity {
                 .into(astronomyImageView);
     }
 
-    private MarsRoverGetter getMarsRoverGetter() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.nasa.gov/mars-photos/api/v1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        return retrofit.create(MarsRoverGetter.class);
-    }
-
-    private void getSpiritData(MarsRoverGetter marsRoverGetter) {
-        Call<RoverPhotos> spiritCall = marsRoverGetter.getSpiritPhotos(1, 1, API_KEY);
+    private void getSpiritData() {
+        Call<RoverPhotos> spiritCall = marsRoverGetter.getRoverPhotos(spirit,1, 1, API_KEY);
         spiritCall.enqueue(new Callback<RoverPhotos>() {
             @Override
             public void onResponse(Call<RoverPhotos> call, Response<RoverPhotos> response) {
@@ -89,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getOpportunityData(MarsRoverGetter marsRoverGetter) {
-        Call<RoverPhotos> opportunityCall = marsRoverGetter.getOpportunityPhotos(1, 1, API_KEY);
+    private void getOpportunityData() {
+        Call<RoverPhotos> opportunityCall = marsRoverGetter.getRoverPhotos(opportunity,1, 1, API_KEY);
         opportunityCall.enqueue(new Callback<RoverPhotos>() {
             @Override
             public void onResponse(Call<RoverPhotos> call, Response<RoverPhotos> response) {
@@ -110,8 +104,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void getCuriosityData(MarsRoverGetter marsRoverGetter) {
-        Call<RoverPhotos> call = marsRoverGetter.getCuriosityPhotos(1, 1, API_KEY);
+    private void getCuriosityData() {
+        Call<RoverPhotos> call = marsRoverGetter.getRoverPhotos(curiosity,1, 1, API_KEY);
         call.enqueue(new Callback<RoverPhotos>() {
             @Override
             public void onResponse(Call<RoverPhotos> call, Response<RoverPhotos> response) {
@@ -137,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putString(ROVERCHOICE, "astronomy");
+                bundle.putString(ROVER_CHOICE, "astronomy");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -147,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putString(ROVERCHOICE, "curiosity");
+                bundle.putString(ROVER_CHOICE, "curiosity");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -157,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putString(ROVERCHOICE, "opportunity");
+                bundle.putString(ROVER_CHOICE, "opportunity");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -167,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putString(ROVERCHOICE, "spirit");
+                bundle.putString(ROVER_CHOICE, "spirit");
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -180,94 +174,17 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
 
-//    private void getOpportunityManifest(MarsRoverGetter marsRoverGetter) {
-//        Call<RoverManifest> call = marsRoverGetter.getOpportunityManifest(API_KEY);
-//        call.enqueue(new Callback<RoverManifest>() {
-//            @Override
-//            public void onResponse(Call<RoverManifest> call, Response<RoverManifest> response) {
-//                if (response.isSuccessful()) {
-//                    RoverManifest roverManifest = response.body();
-//
-//                    HashMap<String, String> manifestStrings = new HashMap<>();
-//                    manifestStrings.put("name", roverManifest.getPhoto_manifest().getName());
-//                    manifestStrings.put("lauchDate", roverManifest.getPhoto_manifest().getLaunch_date());
-//                    manifestStrings.put("maxSol", String.valueOf(roverManifest.getPhoto_manifest().getMax_sol()));
-//                    manifestStrings.put("landingDate", roverManifest.getPhoto_manifest().getLanding_date());
-//                    manifestStrings.put("maxDate", roverManifest.getPhoto_manifest().getMax_date());
-//                    manifestStrings.put("status", roverManifest.getPhoto_manifest().getStatus());
-//                    manifestStrings.put("totalPhotos", String.valueOf(roverManifest.getPhoto_manifest().getTotal_photos()));
-//
-//                    DataProvider.addOpportunityManifestList(manifestStrings);
-//                    Log.d(TAG, "onResponse: " + "Opport manifest: " + manifestStrings.size());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RoverManifest> call, Throwable t) {
-//                t.printStackTrace();
-//            }
-//        });
-//    }
-//
-//    private void getCuriosityManifest(MarsRoverGetter marsRoverGetter) {
-//        Call<RoverManifest> call = marsRoverGetter.getCuriositytManifest(API_KEY);
-//        call.enqueue(new Callback<RoverManifest>() {
-//            @Override
-//            public void onResponse(Call<RoverManifest> call, Response<RoverManifest> response) {
-//                if (response.isSuccessful()) {
-//                    RoverManifest roverManifest = response.body();
-//
-//                    HashMap<String, String> manifestStrings = new HashMap<>();
-//                    manifestStrings.put("name", roverManifest.getPhoto_manifest().getName());
-//                    manifestStrings.put("lauchDate", roverManifest.getPhoto_manifest().getLaunch_date());
-//                    manifestStrings.put("maxSol", String.valueOf(roverManifest.getPhoto_manifest().getMax_sol()));
-//                    manifestStrings.put("landingDate", roverManifest.getPhoto_manifest().getLanding_date());
-//                    manifestStrings.put("maxDate", roverManifest.getPhoto_manifest().getMax_date());
-//                    manifestStrings.put("status", roverManifest.getPhoto_manifest().getStatus());
-//                    manifestStrings.put("totalPhotos", String.valueOf(roverManifest.getPhoto_manifest().getTotal_photos()));
-//
-//                    DataProvider.addCuriosityManifestList(manifestStrings);
-//                    Log.d(TAG, "onResponse: " + "Curiosity manifest: " + manifestStrings.size());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RoverManifest> call, Throwable t) {
-//                t.printStackTrace();
-//            }
-//        });
-//    }
-//
-//    private void getSpiritManifest(MarsRoverGetter marsRoverGetter) {
-//        Call<RoverManifest> call = marsRoverGetter.getSpiritManifest(API_KEY);
-//        call.enqueue(new Callback<RoverManifest>() {
-//            @Override
-//            public void onResponse(Call<RoverManifest> call, Response<RoverManifest> response) {
-//                if (response.isSuccessful()) {
-//                    RoverManifest roverManifest = response.body();
-//
-//                    HashMap<String, String> manifestStrings = new HashMap<>();
-//                    manifestStrings.put("name", roverManifest.getPhoto_manifest().getName());
-//                    manifestStrings.put("lauchDate", roverManifest.getPhoto_manifest().getLaunch_date());
-//                    manifestStrings.put("maxSol", String.valueOf(roverManifest.getPhoto_manifest().getMax_sol()));
-//                    manifestStrings.put("landingDate", roverManifest.getPhoto_manifest().getLanding_date());
-//                    manifestStrings.put("maxDate", roverManifest.getPhoto_manifest().getMax_date());
-//                    manifestStrings.put("status", roverManifest.getPhoto_manifest().getStatus());
-//                    manifestStrings.put("totalPhotos", String.valueOf(roverManifest.getPhoto_manifest().getTotal_photos()));
-//
-//                    DataProvider.addSpiritManifestList(manifestStrings);
-//                    Log.d(TAG, "onResponse: " + "Spirit manifest: " + manifestStrings.size());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<RoverManifest> call, Throwable t) {
-//                t.printStackTrace();
-//            }
-//        });
-//    }
+        findViewById(R.id.temp).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString(ROVER_CHOICE, "light_grey_line");
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+    }
 
     @Override
     public void onResume() {
