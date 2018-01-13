@@ -36,8 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/shuttle00"
-                android:tag="parallax=0.5" />
+                android:src="@drawable/shuttle500px"
+                android:tag="parallax=0.4" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/main_astro_cardview"
@@ -115,7 +115,7 @@
                         android:layout_height="250dp"
                         android:layout_alignParentTop="true"
                         android:scaleType="fitXY"
-                        android:src="@drawable/marsrovers00" />
+                        android:src="@drawable/marsrovers500px" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -154,10 +154,20 @@
             </android.support.v7.widget.CardView>
 
             <LinearLayout
+                android:id="@+id/layout_line_top"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/main_rover_cardview"
+                android:background="@drawable/grey_line"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/photo_fun"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/main_rover_cardview"
+                android:layout_below="@id/layout_line_top"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -173,6 +183,15 @@
                     android:layout_height="wrap_content"
                     android:text="@string/from_mars_phone" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_line_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@id/photo_fun"
+                android:background="@drawable/grey_line"
+                android:orientation="vertical">
 
             </LinearLayout>
 
@@ -180,7 +199,7 @@
                 android:id="@+id/curiosity_opp_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/photo_fun"
+                android:layout_below="@id/layout_line_bottom"
                 android:orientation="horizontal">
 
                 <android.support.v7.widget.CardView
@@ -356,6 +375,7 @@
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/temp"
                     android:layout_width="0dp"
                     android:layout_height="175dp"
                     android:layout_weight="1"

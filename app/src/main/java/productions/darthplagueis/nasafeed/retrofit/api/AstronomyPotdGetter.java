@@ -1,4 +1,4 @@
-package productions.darthplagueis.nasafeed.api;
+package productions.darthplagueis.nasafeed.retrofit.api;
 
 import productions.darthplagueis.nasafeed.model.AstronomyPictureOfTheDay;
 import retrofit2.Call;
@@ -10,10 +10,11 @@ import retrofit2.http.Query;
  */
 
 public interface AstronomyPotdGetter {
+    String astronomyEndPoint = "planetary/apod";
 
-    @GET("planetary/apod")
+    @GET(astronomyEndPoint)
     Call<AstronomyPictureOfTheDay> getAstronomyPotd(@Query("api_key") String api_key);
 
-    @GET("planetary/apod")
+    @GET(astronomyEndPoint)
     Call<AstronomyPictureOfTheDay> getSpecificApod(@Query("date") String date, @Query("api_key") String api_key);
 }
